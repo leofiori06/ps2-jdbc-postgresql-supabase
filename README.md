@@ -1,6 +1,7 @@
-# Gerenciador de Nomes — JDBC + H2
+# Gerenciador de Nomes — JDBC + PostgreSQL
 
-Solução do exemplo **Gerenciador de Nomes**, utilizando JDBC para persistência dos dados em um banco H2.
+Solução do exemplo **Gerenciador de Nomes**, utilizando JD
+BC para persistência dos dados em um banco PostgreSQL hospedado no Supabase.
 
 Esta versão corresponde à implementação final desenvolvida em aula.
 
@@ -25,7 +26,7 @@ GerenciadorNomes
        │      List<String>
        │
        └── GerenciadorNomesBD
-              JDBC + H2
+              JDBC + PostgreSQL
 ```
 
 A interface `GerenciadorNomes` permanece a mesma. Apenas a implementação responsável pelo armazenamento dos dados foi substituída.
@@ -36,7 +37,7 @@ A interface `GerenciadorNomes` permanece a mesma. Apenas a implementação respo
 * Spring Boot
 * Maven
 * JDBC
-* H2 Database
+* PostgreSQL (Supabase)
 
 O Spring Boot é utilizado como estrutura básica para criação e execução do projeto. O acesso ao banco de dados é realizado diretamente através da API JDBC.
 
@@ -53,21 +54,24 @@ A implementação utiliza os principais elementos da API JDBC:
 
 * `DriverManager`
 * `Connection`
-* `Statement`
 * `PreparedStatement`
 * `ResultSet`
 
 ## Banco de dados
 
-O projeto utiliza o H2 em modo arquivo:
+O projeto utiliza PostgreSQL no Supabase. A URL, o usuário e a senha são configurados em `GerenciadorNomesApplication`.
 
-```text
-jdbc:h2:file:./data/banco_dados
+Defina a senha no ambiente antes de executar:
+
+```bash
+export DB_PASSWORD='sua-senha-do-supabase'
 ```
 
-Na primeira execução, o banco é criado automaticamente.
+```text
+jdbc:postgresql://HOST:5432/postgres?sslmode=require
+```
 
-A tabela utilizada pelo projeto é:
+Antes de executar a aplicação, crie a tabela no SQL Editor do Supabase:
 
 ```sql
 CREATE TABLE IF NOT EXISTS nomes (
@@ -75,7 +79,7 @@ CREATE TABLE IF NOT EXISTS nomes (
 );
 ```
 
-Os dados são armazenados em disco e **permanecem disponíveis entre diferentes execuções da aplicação**.
+Os dados são armazenados no PostgreSQL e **permanecem disponíveis entre diferentes execuções da aplicação**.
 
 Por esse motivo, executar o programa várias vezes pode produzir resultados diferentes. Por exemplo, uma tentativa de inserir novamente um nome já cadastrado não será aceita devido à restrição `UNIQUE`.
 

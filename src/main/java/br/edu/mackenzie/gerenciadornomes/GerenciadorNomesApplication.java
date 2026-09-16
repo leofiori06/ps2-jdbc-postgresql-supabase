@@ -4,10 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-// Import de Banco de Dados JDBC
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 
 @SpringBootApplication
 public class GerenciadorNomesApplication implements CommandLineRunner {
@@ -19,21 +17,14 @@ public class GerenciadorNomesApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        // Conexao com banco de dados
-        String url = "jdbc:h2:file:./data/banco_dados";
-        String usuario = "admin";
-        String senha = "admin";
+        // Conexao com banco de dados PostgreSQL - Supabase
+        String url = "jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require";
+        String usuario = "postgres.srvovheiudnopxtnigwr";
+        String senha = System.getenv("DB_PASSWORD");
 
         try (Connection connection =
-                DriverManager.getConnection(url, usuario, senha);
-            Statement statement = connection.createStatement()) {
+                DriverManager.getConnection(url, usuario, senha)) {
 
-            statement.execute("""
-                CREATE TABLE IF NOT EXISTS nomes (
-                    nome VARCHAR(256) NOT NULL UNIQUE
-                )
-                """);
-            
             codigoAnterior(connection);
 
         } catch (Exception e) {
@@ -41,7 +32,7 @@ public class GerenciadorNomesApplication implements CommandLineRunner {
         }
     }
 
-    private void codigoAnterior(Connection connection) { 
+    private void codigoAnterior(Connection connection) {
         // alterado para nova implementação de banco de dados
         GerenciadorNomes gerenciador = new GerenciadorNomesBD(connection);
 

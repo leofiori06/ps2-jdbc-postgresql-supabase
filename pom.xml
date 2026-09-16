@@ -26,10 +26,9 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- Será utilizada posteriormente na migração para JDBC + H2. -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -48,4 +47,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
